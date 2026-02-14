@@ -1,63 +1,44 @@
-# Battleship Terminal Game
+# Priscilla Abhulimen - Portfolio Website
 
-A web-based battleship game with an authentic terminal interface experience and beautiful glassmorphism UI. Built with Next.js, TypeScript, and xterm.js.
+A modern, dark-themed portfolio website featuring glassmorphism design, scroll-based navigation, and an integrated terminal game. Built with Next.js, TypeScript, and Tailwind CSS.
 
-## Features
+## ✨ Features
 
-- 🎯 **Strategic Gameplay**: Plan your attacks carefully with limited missiles
-- 💻 **Terminal Interface**: Authentic command-line experience in your browser
-- 🛡️ **Armored Targets**: Some targets require multiple hits
-- 🎮 **Multiple Maps**: Random map selection for replayability
-- 🌐 **Web-Based**: Play directly in your browser, no installation needed
-- ✨ **Glassmorphism UI**: Beautiful card design with flip animations
+- 🎨 **Glassmorphism Design**: Frosted glass effects with backdrop blur throughout
+- 📊 **Scroll Progress Navigation**: Interactive progress bar with section checkpoints
+- 💳 **Flip Card Projects**: 3D animated project cards showing details and features
+- 🎮 **Integrated Terminal Game**: Playable Battleship game in a web terminal
+- 📱 **Fully Responsive**: Beautiful on all devices
+- 🔗 **Social Integration**: Quick links to resume, GitHub, LinkedIn, and Stack Overflow
 
-## New: Glassmorphism Project Cards
+## 🎯 Key Components
 
-The project now features a stunning glassmorphism card component that showcases your projects with style:
+### Scroll Progress Navigation
+- Real-time scroll progress indicator
+- Clickable checkpoints for each section
+- Active section highlighting
+- Smooth scroll navigation
 
-### Features of the Project Card:
-- **Flip Animation**: Click to flip between front (description) and back (features)
-- **Glassmorphism Design**: Frosted glass effect with backdrop blur
-- **Hover Effects**: Smooth transitions and shine effects
-- **Customizable**: Logo, accent color, tags, and features
-- **Responsive Buttons**: GitHub link and demo/play button
-- **Smooth Animations**: 3D flip effect with CSS transforms
+### Glassmorphism Project Cards
+- **Front**: Project title, description, logo, and technology tags
+- **Back**: Feature list with GitHub and demo/play buttons
+- **3D Flip Animation** on click
+- **Hover Effects** with shine and scale animations
+- **Customizable** accent colors per project
 
-### Using the ProjectCard Component
+### Hero Section
+- Professional introduction
+- Avatar with glow effects
+- Call-to-action button
+- Responsive layout with text/image overlap
 
-```tsx
-import ProjectCard from '@/components/ProjectCard';
+### Fixed Footer
+- Social media links
+- Resume download
+- Glassmorphic styling
+- Always accessible at bottom
 
-<ProjectCard
-  title="Your Project Name"
-  description="Brief description of your project"
-  tags={['React', 'TypeScript', 'Next.js']}
-  features={[
-    'Feature one',
-    'Feature two',
-    'Feature three',
-  ]}
-  githubUrl="https://github.com/username/repo"
-  demoUrl="https://demo-url.com"
-  logo="🎯" // or "B" for text logo
-  accentColor="#00ff00" // Hex color for accents
-/>
-```
-
-### Card Customization Options
-
-| Prop | Type | Description |
-|------|------|-------------|
-| `title` | string | Project title (required) |
-| `description` | string | Brief project description (required) |
-| `tags` | string[] | Technology/category tags (required) |
-| `features` | string[] | List of key features (required) |
-| `githubUrl` | string | GitHub repository URL (optional) |
-| `demoUrl` | string | Live demo URL (optional) |
-| `logo` | string | Emoji or single character logo (optional) |
-| `accentColor` | string | Hex color code for buttons/accents (default: '#00ff00') |
-
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
@@ -66,63 +47,170 @@ import ProjectCard from '@/components/ProjectCard';
 
 ### Installation
 
-1. Install dependencies:
+1. Clone or extract the project
 
+2. Install dependencies:
 ```bash
 npm install
-# or
-yarn install
 ```
 
-2. Run the development server:
+3. Add your avatar image to `public/avatar.png` (or update the path)
 
+4. Run the development server:
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
-3. Open [http://localhost:3000](http://localhost:3000) in your browser
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-### View the Showcase
+## 🎨 Customization
 
-Visit [http://localhost:3000/showcase](http://localhost:3000/showcase) to see multiple project cards with different styles and configurations.
+### Update Your Information
 
-## How to Play
+Edit `app/page.tsx` to customize:
 
-1. Click the glassmorphism card to flip and reveal features
-2. Click the "Play" button to launch the terminal
-3. Accept the mission by typing "yes" or "y"
-4. Enter coordinates to fire missiles (e.g., "A4", "B7")
-5. Try to hit all enemy targets before running out of missiles!
+#### Personal Details
+```tsx
+<HeroSection
+  name="Your Name"
+  title="Your Title/Tagline"
+  description="Your bio..."
+  avatarUrl="/avatar.png"
+/>
+```
 
-### Game Symbols
+#### Projects
+```tsx
+const projects = [
+  {
+    id: 1,
+    title: 'Project Name',
+    description: 'Brief description...',
+    tags: ['React', 'TypeScript'],
+    categories: ['Web'], // Web, Mobile, Backend, Design
+    features: ['Feature 1', 'Feature 2'],
+    githubUrl: 'https://github.com/you/project',
+    demoUrl: 'https://demo.com',
+    logo: '🚀',
+    accentColor: '#4F46E5',
+  },
+];
+```
 
-- **X** (Red): Missed shot
-- **O** (Green): Target hit and destroyed
-- **-** (Yellow): Armored target hit (requires more shots)
-- **-** (Blue): Unrevealed target positions (shown at game end)
+#### Social Links
+```tsx
+const socialLinks = [
+  { name: 'Resume', url: '/your-resume.pdf', icon: 'resume' },
+  { name: 'LinkedIn', url: 'https://linkedin.com/in/you', icon: 'linkedin' },
+  { name: 'GitHub', url: 'https://github.com/you', icon: 'github' },
+  { name: 'Stack Overflow', url: 'https://stackoverflow.com/users/you', icon: 'stackoverflow' },
+];
+```
 
-### Tips
+#### Companies/Clients
+```tsx
+const companies = [
+  { name: 'Company Name', logo: '🏢', url: 'https://company.com' },
+];
+```
 
-- Armored targets (shown with **-**) require multiple hits to destroy
-- You have a limited number of missiles per game
-- Plan your shots strategically to maximize your chances of winning
-- Each map is randomly selected, so every game is different!
+### Add More Sections to Navigation
 
-## Building for Production
+In `components/ScrollProgressNav.tsx`:
 
-To create a production build:
+```tsx
+const checkpoints = [
+  { id: 'me', label: 'Me' },
+  { id: 'work', label: 'Work' },
+  { id: 'contact', label: 'Contact' }, // Add new sections
+];
+```
 
+Then add the corresponding section with `id="contact"` in your page.
+
+## 🎮 Special Features
+
+### Battleship Terminal Game
+
+The portfolio includes an interactive Battleship game accessible through the project cards:
+
+1. Click any project card to flip and see features
+2. Click "Play" on the Battleship project
+3. Terminal modal opens with the game
+4. Play directly in your browser!
+
+### Project Filtering
+
+Projects can be filtered by category:
+- Web
+- Mobile
+- Backend
+- Design
+- See more (shows all)
+
+## 📂 Project Structure
+
+```
+battleship-terminal-app/
+├── app/
+│   ├── page.tsx              # Main portfolio page
+│   ├── portfolio/page.tsx    # Alternative portfolio route
+│   ├── showcase/page.tsx     # Card showcase examples
+│   ├── layout.tsx            # Root layout
+│   └── globals.css           # Global styles
+├── components/
+│   ├── ProjectCard.tsx       # Glassmorphism flip card
+│   ├── ScrollProgressNav.tsx # Scroll progress navbar
+│   ├── HeroSection.tsx       # Hero with avatar
+│   ├── SocialLinks.tsx       # Social media links
+│   ├── SectionHeader.tsx     # Section titles
+│   ├── FilterTabs.tsx        # Category filters
+│   ├── CompanyShowcase.tsx   # Client logos
+│   └── TerminalModal.tsx     # Battleship game terminal
+├── lib/
+│   ├── battleshipEngine.ts   # Game logic
+│   ├── mapData.ts            # Type definitions
+│   └── map.json              # Game maps
+└── public/
+    └── avatar.png            # Your profile picture
+```
+
+## 🎨 Color Palette
+
+The portfolio uses a dark theme with accent colors:
+
+- **Background**: `#0a0a0a` (near black)
+- **Glass Effects**: `white/5` to `white/10` with backdrop blur
+- **Accent Colors**: Purple (`#8B5CF6`), Pink (`#EC4899`), Blue (`#4F46E5`)
+- **Project-Specific**: Customizable per project card
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
+```bash
+npm install -g vercel
+vercel
+```
+
+### Netlify
+1. Connect your Git repository
+2. Build command: `npm run build`
+3. Publish directory: `.next`
+
+### Manual Build
 ```bash
 npm run build
 npm start
-# or
-yarn build
-yarn start
 ```
 
-## Tech Stack
+## 📚 Documentation
+
+- **Quick Start**: QUICKSTART.md
+- **Setup Guide**: PORTFOLIO_SETUP_GUIDE.md
+- **Project Cards**: PROJECTCARD_GUIDE.md
+- **Troubleshooting**: TROUBLESHOOTING.md
+
+## 💻 Tech Stack
 
 - **Next.js 15** - React framework
 - **TypeScript** - Type safety
@@ -130,31 +218,24 @@ yarn start
 - **xterm.js** - Terminal emulation
 - **React 19** - UI library
 
-## Project Structure
+## 🎯 Design Philosophy
 
-```
-battleship-terminal-app/
-├── app/
-│   ├── page.tsx           # Main landing page with project card
-│   ├── showcase/
-│   │   └── page.tsx       # Showcase of multiple cards
-│   ├── layout.tsx         # Root layout
-│   └── globals.css        # Global styles
-├── components/
-│   ├── ProjectCard.tsx    # Glassmorphism card component
-│   └── TerminalModal.tsx  # Terminal game interface
-├── lib/
-│   ├── battleshipEngine.ts # Game logic
-│   ├── mapData.ts         # Type definitions for maps
-│   └── map.json           # Game map data
-└── public/                # Static assets
-```
+- **Dark & Modern**: Professional dark theme with subtle accents
+- **Glassmorphism**: Frosted glass effects throughout
+- **Smooth Animations**: Purposeful, not distracting
+- **Content First**: Clear hierarchy and readability
+- **Interactive**: Engaging scroll navigation and flip cards
 
-## Credits
-
-Original game by **Priscilla Abhulimen**  
-Web terminal adaptation with enhanced UI/UX and glassmorphism design
-
-## License
+## 📄 License
 
 ISC
+
+## 👤 Author
+
+**Priscilla Abhulimen**
+
+Portfolio website showcasing full-stack development, product design, and software engineering projects.
+
+---
+
+**Questions?** Check the guides in the project or open an issue!
