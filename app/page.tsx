@@ -141,12 +141,12 @@ export default function Home() {
 
   const socialLinks = [
     { name: 'Resume', url: '/priscilla_a_resume.docx', icon: 'resume' as const },
-    { name: 'LinkedIn', url: 'https://linkedin.com/in/yourusername', icon: 'linkedin' as const },
-    { name: 'GitHub', url: 'https://github.com/yourusername', icon: 'github' as const },
-    { name: 'Stack Overflow', url: 'https://stackoverflow.com/users/yourid', icon: 'stackoverflow' as const },
+    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/priscilla-abhulimen-052689165/', icon: 'linkedin' as const },
+    { name: 'GitHub', url: 'https://github.com/priscillaabhulimen', icon: 'github' as const },
+    { name: 'Stack Overflow', url: 'https://stackoverflow.com/users/11046382/priscilla-abhulimen', icon: 'stackoverflow' as const },
   ];
 
-  const filterTabs = ['Web', 'Mobile', 'Backend', 'Design', 'See more'];
+  const filterTabs = ['Web', 'Mobile', 'Backend', 'Design', 'HTML5', 'CSS3', 'Flutter', 'VueJS', 'Figma', 'NodeJS', 'NextJS', 'MongoDB', 'ReactJS', 'TypeScript', 'Mini Games', 'Redesign', 'TailwindCSS', 'SCSS'];
 
   const filteredProjects = activeFilter === 'See more'
     ? projects
