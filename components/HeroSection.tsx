@@ -5,7 +5,7 @@ interface HeroSectionProps {
   title: string;
   description: string;
   avatarUrl?: string;
-  onContactClick?: () => void;
+  contactUrl?: string;
 }
 
 export default function HeroSection({
@@ -13,7 +13,7 @@ export default function HeroSection({
   title,
   description,
   avatarUrl,
-  onContactClick,
+  contactUrl,
 }: HeroSectionProps) {
   return (
     <section className="min-h-full px-8 xl:px-24 py-28 mb-18">
@@ -33,13 +33,15 @@ export default function HeroSection({
             {description}
           </p>
 
-          <button
-            onClick={onContactClick}
+          <div className="h-8"></div>
+
+          <a
+            href={contactUrl}
             className="group relative px-8 py-2.5 bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 rounded-sm text-white font-medium transition-all duration-300 hover:scale-105 mt-8"
           >
             <span className="relative z-10">Talk to me</span>
             <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-purple-600/20 to-pink-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </button>
+          </a>
 
         </div>
         

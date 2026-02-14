@@ -8,6 +8,7 @@ import SectionHeader from '@/components/SectionHeader';
 import FilterTabs from '@/components/FilterTabs';
 import ProjectCard from '@/components/ProjectCard';
 import CompanyShowcase from '@/components/CompanyShowcase';
+import ScrollProgressNav from '@/components/ScrollProgressNav';
 
 const TerminalModal = dynamic(() => import('@/components/TerminalModal'), {
   ssr: false,
@@ -158,8 +159,8 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0a0a0a] text-white">
-      {/* TODO: Add nav here */}
+    <main className="min-h-screen bg-[#0a0a0a] text-white pb-28">
+      <ScrollProgressNav />
 
       {/* Hero Section */}
       <div className="pt-20" id="me">
@@ -168,9 +169,7 @@ export default function Home() {
           title="I design your products and build them too"
           description="I focus on ensuring scalability, and stability, as well as the best flow and user experience for different user types."
           avatarUrl="/avatar.svg"
-          onContactClick={() => {
-            window.location.href = '#contact';
-          }}
+          contactUrl={`mailto:priscillaabhulimen@gmail.com?subject=${'Hello Priscilla!'}&body=${'I came across your portfolio and would like to get in touch with you regarding potential opportunities. Please let me know the best way to reach you. Looking forward to connecting!'}`}
         />
       </div>
       
@@ -221,9 +220,11 @@ export default function Home() {
       <CompanyShowcase companies={companies} />
 
       {/* Footer */}
-      <footer className="py-3 px-4 mx-4 lg:mx-12 my-8 rounded-md border border-gray-500/20 bg-gradient-to-br from-gray-700/40 to-gray-900/40 backdrop-blur-xl">
+      <footer className="fixed bottom-0 left-0 right-0 z-40 py-3 px-4 mx-4 lg:mx-12 mb-4 rounded-md border border-gray-500/20 bg-gradient-to-br from-gray-700/40 to-gray-900/40 backdrop-blur-xl">
         <SocialLinks links={socialLinks} />
       </footer>
+
+      <div className="h-24" />
 
       {/* Terminal Modal */}
       <TerminalModal
