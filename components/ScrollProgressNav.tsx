@@ -24,6 +24,8 @@ export default function ScrollProgressNav() {
         }
       });
       
+      positions['companies'] = 100;
+      
       setCheckpointPositions(positions);
     };
 
@@ -70,6 +72,7 @@ export default function ScrollProgressNav() {
   const checkpoints = [
     { id: 'me', label: 'Me' },
     { id: 'work', label: 'Work' },
+    { id: 'companies', label: 'Companies' },
   ];
 
   const isCheckpointPassed = (checkpointId: string) => {
