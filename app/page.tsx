@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import HeroSection from '@/components/HeroSection';
 import SocialLinks from '@/components/SocialLinks';
@@ -10,6 +10,9 @@ import ProjectCard from '@/components/ProjectCard';
 import CompanyShowcase from '@/components/CompanyShowcase';
 import ScrollProgressNav from '@/components/ScrollProgressNav';
 import projects from '../lib/project';
+const ThreeInARowModal = dynamic(() => import('@/components/ThreeInARowModal'), {
+  ssr: false,
+});
 
 const TerminalModal = dynamic(() => import('@/components/TerminalModal'), {
   ssr: false,
@@ -18,6 +21,7 @@ const TerminalModal = dynamic(() => import('@/components/TerminalModal'), {
 export default function Home() {
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [isThreeInARowOpen, setIsThreeInARowOpen] = useState(false);
 
   const companies = [
     { name: 'Central Bank of Nigeria', logo: '🏦', url: 'https://cbn.gov.ng' },
@@ -39,11 +43,30 @@ export default function Home() {
     ? projects
     : projects.filter((project) => project.tags.includes(activeFilter));
 
-  const handleDemoClick = (demoUrl: string) => {
-    if (demoUrl === '#battleship') {
-      setIsTerminalOpen(true);
-    }
-  };
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const link = target.closest('a');
+      const href = link?.getAttribute('href');
+      
+      if (href === '#battleship') {
+        e.preventDefault();        // Stop navigation
+        e.stopPropagation();       // Stop event bubbling
+        setIsTerminalOpen(true);   // Open modal
+      } else if (href === '#three-in-a-row') {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsThreeInARowOpen(true);
+      }
+    };
+
+    // The 'true' parameter makes this a CAPTURING listener
+    // It fires BEFORE the default link behavior
+    document.addEventListener('click', handleClick, true);
+    return () => document.removeEventListener('click', handleClick, true);
+  }, []);
+
+  
 
   return (
     <main className="min-h-screen bg-[#0a0a0a] text-white pb-28">
@@ -75,17 +98,7 @@ export default function Home() {
             onTabChange={(t: string | null) => setActiveFilter(t)}
           />
 
-          <div
-            className="flex flex-wrap gap-8"
-            onClick={(e) => {
-              const target = e.target as HTMLElement;
-              const link = target.closest('a');
-              if (link && link.getAttribute('href')?.includes('#battleship')) {
-                e.preventDefault();
-                handleDemoClick('#battleship');
-              }
-            }}
-          >
+          <div className="flex flex-wrap gap-8">
             {filteredProjects.map((project) => (
               <ProjectCard
                 key={project.id}
@@ -117,6 +130,11 @@ export default function Home() {
       <TerminalModal
         isOpen={isTerminalOpen}
         onClose={() => setIsTerminalOpen(false)}
+      />
+
+      <ThreeInARowModal
+        isOpen={isThreeInARowOpen}
+        onClose={() => setIsThreeInARowOpen(false)}
       />
     </main>
   );

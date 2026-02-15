@@ -81,23 +81,6 @@ export default [
       demoUrl: '#battleship',
     },
     {
-      id: 5,
-      title: 'Three-In-A-Row',
-      description: 'A mini game used to study DOM, BOM and CSSOM manipulation, as well as API calls using fetch in vanilla javascript. The use of frameworks was intentionally avoided in order to strengthen knowledge in the cpre episodes of web development.',
-      tags: ['Web', 'HTML5', 'CSS3', 'Mini Games'],
-      categories: ['Web', 'Backend'],
-      features: [
-        'Pure vanilla JavaScript implementation',
-        'DOM manipulation mastery',
-        'Real-time game state management',
-        'Responsive grid layout',
-        'Win detection algorithm',
-        'Score tracking system',
-      ],
-      githubUrl: 'https://github.com/priscillaabhulimen/three-in-a-row',
-      demoUrl: 'https://three-in-a-row-demo.com',
-    },
-    {
       id: 6,
       title: 'Poker Draw',
       description: 'A mini game that explores logical reasoning and constraint-based app development to deliver an app that allows you to draw cards and then determines your best hand from that draw.',
@@ -112,6 +95,24 @@ export default [
         'Multiple game modes',
       ],
       githubUrl: 'https://github.com/priscillaabhulimen/poker-app',
-      liveUrl: 'https://vue-poker-app.netlify.app/basic',
-    }
+      liveUrl: 'https://vue-poker-app.netlify.app/',
+    },
+    {
+      id: 5,
+      title: 'Three-In-A-Row',
+      description: 'A mini game used to study DOM, BOM and CSSOM manipulation, as well as API calls using fetch in vanilla javascript. The use of frameworks was intentionally avoided in order to strengthen knowledge in the cpre episodes of web development.',
+      tags: ['Web', 'HTML5', 'CSS3', 'Mini Games'],
+      categories: ['Web', 'Backend'],
+      features: [
+        'Pure vanilla JavaScript implementation',
+        'DOM manipulation mastery',
+        'Real-time game state management',
+        'Responsive grid layout',
+        'Win detection algorithm',
+        'Score tracking system',
+      ],
+      githubUrl: 'https://github.com/priscillaabhulimen/three-in-a-row',
+      // demoUrl: '#three-in-a-row',
+    },
+    
 ]
