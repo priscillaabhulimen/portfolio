@@ -9,6 +9,7 @@ import FilterTabs from '@/components/FilterTabs';
 import ProjectCard from '@/components/ProjectCard';
 import CompanyShowcase from '@/components/CompanyShowcase';
 import ScrollProgressNav from '@/components/ScrollProgressNav';
+import projects from '../lib/project';
 
 const TerminalModal = dynamic(() => import('@/components/TerminalModal'), {
   ssr: false,
@@ -16,121 +17,7 @@ const TerminalModal = dynamic(() => import('@/components/TerminalModal'), {
 
 export default function Home() {
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
-  const [activeFilter, setActiveFilter] = useState('Web');
-
-  const projects = [
-    {
-      id: 1,
-      title: 'PayMeBlue (Blue) Business',
-      description: 'A payment solutions built with the needs of the local consumer demographic and economic climate in mind',
-      tags: ['Mobile', 'Flutter'],
-      categories: ['Mobile'],
-      features: [
-        'Push notifications',
-        'Deep linking',
-        'Webview app with custom event triggers',
-        'Live chat with Firebase',
-        'QR and Barcode generation and encryption',
-        'Feature-flaggin',
-      ],
-      demoUrl: 'https://paymeblue.com',
-      logo: 'B',
-      accentColor: '#4F46E5',
-    },
-    {
-      id: 2,
-      title: 'Goalspaces',
-      description: 'A community-based, peer accountability social app that intends to encourage goal setting and goal achievement through bite-sized tasks',
-      tags: ['Mobile', 'Flutter'],
-      categories: ['Mobile'],
-      features: [
-        'Social goal sharing',
-        'Peer accountability system',
-        'Task breakdown tools',
-        'Progress tracking',
-        'Community engagement',
-        'Achievement milestones',
-      ],
-      demoUrl: 'https://goalspaces.com',
-      logo: '🎯',
-      accentColor: '#8B5CF6',
-    },
-    {
-      id: 3,
-      title: 'LinkedIn - Redesign',
-      description: 'A redesign of the LinkedIn web app home screen for better organisation and less information overload',
-      tags: ['Design', 'Figma', 'Redesign'],
-      categories: ['Design'],
-      features: [
-        'Simplified navigation',
-        'Reduced visual clutter',
-        'Improved content hierarchy',
-        'Better mobile responsiveness',
-        'Enhanced readability',
-        'Modern design language',
-      ],
-      demoUrl: 'https://figma.com/...',
-      logo: 'in',
-      accentColor: '#0A66C2',
-    },
-    {
-      id: 4,
-      title: 'Battleship - Revised',
-      description: 'A pure ESM javascript app to study JS functions, local and 3rd party modules, code structure and logical reasoning to create a game very much like and inspired by the popular game, "Battleship".',
-      tags: ['NodeJS', 'Mini Games'],
-      categories: ['Web'],
-      features: [
-        'Terminal-based gameplay with authentic CLI experience',
-        'Multiple difficulty levels with random map generation',
-        'Armored targets requiring strategic multi-hit tactics',
-        'Real-time game statistics and scoring system',
-        'Replay functionality with new mission generation',
-        'Color-coded feedback for hits, misses, and armored targets',
-      ],
-      githubUrl: 'https://github.com/yourusername/battleship',
-      demoUrl: '#battleship',
-      logo: '⚓',
-      accentColor: '#00ff00',
-    },
-    {
-      id: 5,
-      title: 'Three-In-A-Row',
-      description: 'A mini game used to study DOM, BOM and CSSOM manipulation, as well as API calls using fetch in vanilla javascript. The use of frameworks was intentionally avoided in order to strengthen knowledge in the cpre episodes of web development.',
-      tags: ['Web', 'HTML5', 'CSS3', 'Mini Games'],
-      categories: ['Web', 'Backend'],
-      features: [
-        'Pure vanilla JavaScript implementation',
-        'DOM manipulation mastery',
-        'Real-time game state management',
-        'Responsive grid layout',
-        'Win detection algorithm',
-        'Score tracking system',
-      ],
-      githubUrl: 'https://github.com/yourusername/three-in-a-row',
-      demoUrl: 'https://three-in-a-row-demo.com',
-      logo: '🎮',
-      accentColor: '#F59E0B',
-    },
-    {
-      id: 6,
-      title: 'Poker Draw',
-      description: 'A mini game that explores logical reasoning and constraint-based app development to deliver an app that allows you to draw cards and then determines your best hand from that draw.',
-      tags: ['Web', 'VueJS', 'SCSS', 'TailwindCSS', 'Mini Games'],
-      categories: ['Web'],
-      features: [
-        'Card drawing mechanics',
-        'Hand evaluation algorithm',
-        'Poker hand ranking system',
-        'Visual card animations',
-        'Score calculation',
-        'Multiple game modes',
-      ],
-      githubUrl: 'https://github.com/yourusername/poker-draw',
-      demoUrl: 'https://vue-poker-app.netlify.app/basic',
-      logo: '🃏',
-      accentColor: '#EC4899',
-    },
-  ];
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
   const companies = [
     { name: 'Central Bank of Nigeria', logo: '🏦', url: 'https://cbn.gov.ng' },
@@ -148,9 +35,9 @@ export default function Home() {
 
   const filterTabs = ['Web', 'Mobile', 'Backend', 'Design', 'HTML5', 'CSS3', 'Flutter', 'VueJS', 'Figma', 'NodeJS', 'NextJS', 'MongoDB', 'ReactJS', 'TypeScript', 'Mini Games', 'Redesign', 'TailwindCSS', 'SCSS'];
 
-  const filteredProjects = activeFilter === 'See more'
+  const filteredProjects = activeFilter === null
     ? projects
-    : projects.filter((project) => project.categories.includes(activeFilter));
+    : projects.filter((project) => project.tags.includes(activeFilter));
 
   const handleDemoClick = (demoUrl: string) => {
     if (demoUrl === '#battleship') {
@@ -185,11 +72,11 @@ export default function Home() {
           <FilterTabs
             tabs={filterTabs}
             activeTab={activeFilter}
-            onTabChange={setActiveFilter}
+            onTabChange={(t: string | null) => setActiveFilter(t)}
           />
 
           <div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="flex flex-wrap gap-8"
             onClick={(e) => {
               const target = e.target as HTMLElement;
               const link = target.closest('a');
@@ -209,7 +96,7 @@ export default function Home() {
                 githubUrl={project.githubUrl}
                 demoUrl={project.demoUrl}
                 logo={project.logo}
-                accentColor={project.accentColor}
+                liveUrl={project.liveUrl}
               />
             ))}
           </div>

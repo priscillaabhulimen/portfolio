@@ -4,8 +4,8 @@ import { useState } from 'react';
 
 interface FilterTabsProps {
   tabs: string[];
-  activeTab: string;
-  onTabChange: (tab: string) => void;
+  activeTab?: string | null;
+  onTabChange: (tab: string | null) => void;
 }
 
 export default function FilterTabs({ tabs, activeTab, onTabChange }: FilterTabsProps) {
@@ -17,7 +17,7 @@ export default function FilterTabs({ tabs, activeTab, onTabChange }: FilterTabsP
       {visibleTabs.map((tab) => (
         <button
           key={tab}
-          onClick={() => onTabChange(tab)}
+          onClick={() => onTabChange(tab === activeTab ? null : tab)}
           className={`px-3 py-1.5 text-xs rounded-md font-medium transition-all duration-300 ${
             activeTab === tab
               ? 'bg-white/10 text-white border border-white/20 backdrop-blur-sm scale-105'
