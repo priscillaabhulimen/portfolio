@@ -1,4 +1,5 @@
 'use client';
+import SectionHeader from "./SectionHeader";
 
 interface Company {
   name: string;
@@ -14,9 +15,7 @@ export default function CompanyShowcase({ companies }: CompanyShowcaseProps) {
   return (
     <section className="py-20 px-4">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-white text-center mb-12">
-          Who I've worked with
-        </h2>
+        <SectionHeader title="Companies I've Worked With" subtitle="A selection of organizations I've collaborated with." />
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {companies.map((company, index) => (

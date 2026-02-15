@@ -239,7 +239,7 @@ export class BattleshipGame {
       
       return {
         success: true,
-        message: '\nMISS!!!\n',
+        message: '\nMISS!!!',
         type: 'miss',
       };
     }

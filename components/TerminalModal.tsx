@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef} from 'react';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import 'xterm/css/xterm.css';
@@ -18,6 +18,17 @@ export default function TerminalModal({ isOpen, onClose }: TerminalModalProps) {
   const gameRef = useRef<BattleshipGame | null>(null);
   const inputBufferRef = useRef<string>('');
   const gameStateRef = useRef<'menu' | 'playing' | 'post-game'>('menu');
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen || !terminalRef.current) return;
@@ -87,11 +98,11 @@ export default function TerminalModal({ isOpen, onClose }: TerminalModalProps) {
 
   const writeColoredLine = (text: string, color: 'red' | 'green' | 'yellow' | 'blue' | 'cyan') => {
     const colors = {
-      red: '\x1b[31m',
-      green: '\x1b[32m',
-      yellow: '\x1b[33m',
-      blue: '\x1b[34m',
-      cyan: '\x1b[36m',
+      red: '\x1b[41m',
+      green: '\x1b[42m',
+      yellow: '\x1b[43m',
+      blue: '\x1b[44m',
+      cyan: '\x1b[46m',
     };
     const reset = '\x1b[0m';
     writeLine(colors[color] + text + reset);
@@ -160,7 +171,7 @@ export default function TerminalModal({ isOpen, onClose }: TerminalModalProps) {
         }, 500);
       } else if (trimmedInput === 'no' || trimmedInput === 'n') {
         writeLine('\nHow utterly disappointing.\n');
-        setTimeout(() => onClose(), 2000);
+        setTimeout(() => onClose(), 4000);
       } else {
         writeLine('Please answer "yes" or "no"');
         write('> ');
@@ -218,7 +229,7 @@ export default function TerminalModal({ isOpen, onClose }: TerminalModalProps) {
         startGame();
       } else if (trimmedInput === '2' || trimmedInput === 'no' || trimmedInput === 'n') {
         writeLine('\nWell, at least you tried.\n');
-        setTimeout(() => onClose(), 2000);
+        setTimeout(() => onClose(), 4000);
       } else {
         writeLine('Please enter 1 (Yes) or 2 (No)');
         write('<Yes or No> [1, 2]: ');
@@ -243,10 +254,9 @@ export default function TerminalModal({ isOpen, onClose }: TerminalModalProps) {
     });
     
     if (!endGame) {
-      writeColoredLine(`X Targets Missed: ${state.firedMap.size - (state.allTargetsCount - state.targetsToWin)}`, 'red');
-      writeColoredLine(`O Targets Hit:    ${state.allTargetsCount - state.targetsToWin}`, 'green');
+      writeLine('');
       writeColoredLine(`- Targets Left:   ${state.targetsToWin}`, 'blue');
-      writeColoredLine(`- Armored Targets: ${state.armoredTargetCount}`, 'yellow');
+      writeLine(`- Missiles Left:  ${state.missilesLeft}`);
       writeLine('');
       writeLine('Select a new target coordinate (e.g A4):');
       write('> ');

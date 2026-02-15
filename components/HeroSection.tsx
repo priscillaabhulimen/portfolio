@@ -16,11 +16,11 @@ export default function HeroSection({
   contactUrl,
 }: HeroSectionProps) {
   return (
-    <section className="min-h-full px-8 xl:px-24 py-28 mb-18">
+    <section className="min-h-full px-8 xl:px-24 pb-32 pt-20 mb-18">
       <div className="flex flex-col-reverse lg:flex-row justify-center items-center">
         {/* Textbox area */}
-        <div className="pt-40 pb-8 lg:py-8 px-8 w-full -mt-40 lg:mt-0 lg:-mr-32 rounded-md  bg-gradient-to-br from-gray-700/60 to-gray-900/60 backdrop-blur-xl">
-          <p className="text-gray-400 text-md">Hi, I'm</p>
+        <div className="pt-40 pb-8 lg:py-8 px-8 lg:w-full -mt-40 lg:mt-0 lg:-mr-32 rounded-md  bg-gradient-to-br from-gray-700/60 to-gray-900/60 backdrop-blur-xl">
+          <p className="text-gray-400 text-md">Hi, I am</p>
           <h1 className="text-3xl lg:text-5xl font-bold text-white leading-tight">
             {name}
           </h1>
@@ -49,7 +49,7 @@ export default function HeroSection({
         <div className="relative">
           <div/>
             {/* Avatar container */}
-            <div className="backdrop-blur-xl relative w-120 h-120 rounded-full overflow-hidden border-2 border-gray-700  bg-gradient-to-br from-gray-700/60 to-gray-900/60">
+            <div className="backdrop-blur-xl relative w-90 h-90 xl:w-120 xl:h-120 rounded-full overflow-hidden border-2 border-gray-700  bg-gradient-to-br from-gray-700/60 to-gray-900/60">
                {avatarUrl && (
                  <img
                    src={avatarUrl}

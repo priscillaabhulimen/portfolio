@@ -81,9 +81,9 @@ export default function ScrollProgressNav() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black/20 backdrop-blur-md border-b border-white/5">
-      <div className="max-w-7xl mx-auto px-4 py-3">
+      <div className="max-w-7xl mx-auto py-3">
         
-        <div className="relative h-2.5 mt-8 mb-6 bg-white/10 rounded-full overflow-visible">
+        <div className="relative h-2.5 mt-8 mb-6 mx-8 bg-white/10 rounded-full overflow-visible">
           <div
             className="absolute top-0 left-0 h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-150 ease-out"
             style={{ width: `${scrollProgress}%` }}
