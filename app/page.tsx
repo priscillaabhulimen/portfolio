@@ -24,20 +24,29 @@ export default function Home() {
   const [isThreeInARowOpen, setIsThreeInARowOpen] = useState(false);
 
   const companies = [
-    { name: 'Central Bank of Nigeria', logo: '🏦', url: 'https://cbn.gov.ng' },
-    { name: 'Africhange', logo: '💱', url: 'https://africhange.com' },
-    { name: 'Goalspaces LLC', logo: '🎯', url: 'https://goalspaces.com' },
-    { name: 'iRecharge Tech Innovations', logo: '⚡', url: 'https://irecharge.com' },
+    { name: 'Central Bank of Nigeria', logo: '/cbn.png', url: 'https://cbn.gov.ng' },
+    { name: 'Africhange', logo: '/afr.png', url: 'https://africhange.com' },
+    { name: 'Goalspaces LLC', logo: '/gsp.png', url: 'https://goalspaces.com' },
+    { name: 'iRecharge Tech Innovations', logo: '/irc.png', url: 'https://irecharge.com' },
   ];
 
   const socialLinks = [
-    { name: 'Resume', url: '/priscilla_a_resume.docx', icon: 'resume' as const },
+    { name: 'Resume', url: '/priscilla_a_resume.pdf', icon: 'resume' as const },
     { name: 'LinkedIn', url: 'https://www.linkedin.com/in/priscilla-abhulimen-052689165/', icon: 'linkedin' as const },
     { name: 'GitHub', url: 'https://github.com/priscillaabhulimen', icon: 'github' as const },
     { name: 'Stack Overflow', url: 'https://stackoverflow.com/users/11046382/priscilla-abhulimen', icon: 'stackoverflow' as const },
   ];
 
-  const filterTabs = ['Web', 'Mobile', 'Backend', 'Design', 'HTML5', 'CSS3', 'Flutter', 'VueJS', 'Figma', 'NodeJS', 'NextJS', 'MongoDB', 'ReactJS', 'TypeScript', 'Mini Games', 'Redesign', 'TailwindCSS', 'SCSS'];
+  // const filterTabs = ['Web', 'Mobile', 'Backend', 'Design', 'HTML5', 'CSS3', 'Flutter', 'VueJS', 'Figma', 'NodeJS', 'NextJS', 'MongoDB', 'ReactJS', 'TypeScript', 'Mini Games', 'Redesign', 'TailwindCSS', 'SCSS'];
+
+  const filterTabs = projects.reduce((tabs: string[], project) => {
+    project.tags.forEach((tag) => {
+      if (!tabs.includes(tag)) {
+        tabs.push(tag);
+      }
+    });
+    return tabs;
+  }, ['Web', 'Mobile', 'Backend', 'Design',]);
 
   const filteredProjects = activeFilter === null
     ? projects
@@ -99,7 +108,10 @@ export default function Home() {
           />
 
           <div className="flex flex-wrap gap-8 w-full">
-            {filteredProjects.map((project) => (
+            { filteredProjects.length === 0 ? (
+              <p className="text-gray-400 text-center w-full mt-8">No projects yet for the selected filter.</p>
+            ) : 
+            filteredProjects.map((project) => (
               <ProjectCard
                 key={project.id}
                 title={project.title}
@@ -117,7 +129,9 @@ export default function Home() {
       </section>
 
       {/* Companies Section */}
-      <CompanyShowcase companies={companies} />
+      <section id="companies">
+        <CompanyShowcase companies={companies} />
+      </section>
 
       {/* Footer */}
       <footer className="fixed bottom-0 left-0 right-0 z-40 py-3 px-4 mx-4 lg:mx-12 mb-4 rounded-md border border-gray-500/20 bg-gradient-to-br from-gray-700/40 to-gray-900/40 backdrop-blur-xl">
