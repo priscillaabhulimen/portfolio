@@ -129,7 +129,9 @@ export default function Home() {
       </section>
 
       {/* Companies Section */}
-      <CompanyShowcase companies={companies} />
+      <section id="companies">
+        <CompanyShowcase companies={companies} />
+      </section>
 
       {/* Footer */}
       <footer className="fixed bottom-0 left-0 right-0 z-40 py-3 px-4 mx-4 lg:mx-12 mb-4 rounded-md border border-gray-500/20 bg-gradient-to-br from-gray-700/40 to-gray-900/40 backdrop-blur-xl">

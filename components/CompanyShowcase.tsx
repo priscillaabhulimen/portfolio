@@ -13,7 +13,7 @@ interface CompanyShowcaseProps {
 
 export default function CompanyShowcase({ companies }: CompanyShowcaseProps) {
   return (
-    <section className="py-20 px-4">
+    <section className="pt-12 pb-32 px-4">
       <div className="max-w-7xl mx-auto">
         <SectionHeader title="Companies I've Worked With" subtitle="A selection of organizations I've collaborated with." />
 
