@@ -29,7 +29,9 @@ export default function ProjectCard({
   return (
     <div
       className={`group perspective-1000 min-h-80 cursor-pointer ${
-        logo ? 'flex-[1_1_calc(50%-1rem)] max-w-[calc(50%-1rem)]' : 'flex-[0_1_400px]'
+        logo 
+          ? 'w-full md:flex-[1_1_calc(50%-1rem)] md:max-w-[calc(50%-1rem)]' 
+          : 'w-full md:flex-[0_1_400px] md:max-w-[400px]'
       }`}
       onClick={() => setIsFlipped(!isFlipped)}
     >

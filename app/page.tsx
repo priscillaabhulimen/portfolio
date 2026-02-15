@@ -98,7 +98,7 @@ export default function Home() {
             onTabChange={(t: string | null) => setActiveFilter(t)}
           />
 
-          <div className="flex flex-wrap gap-8">
+          <div className="flex flex-wrap gap-8 w-full">
             {filteredProjects.map((project) => (
               <ProjectCard
                 key={project.id}
