@@ -39,9 +39,13 @@ export default function ProjectCard({
         className={`relative w-full h-full transition-transform duration-700 transform-style-3d ${
           isFlipped ? 'rotate-y-180' : ''
         }`}
+        style={{ transformStyle: 'preserve-3d' }}
       >
         {/* Front of Card */}
-        <div className="absolute inset-0 backface-hidden">
+        <div 
+          className="absolute inset-0 backface-hidden" 
+          style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+        >
           <div className="relative w-full h-full rounded-md overflow-hidden group-hover:scale-[1.02] transition-transform duration-300">
             <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/10 shadow-2xl" />
             
@@ -103,9 +107,16 @@ export default function ProjectCard({
         </div>
 
         {/* Back of Card */}
-        <div className="absolute inset-0 backface-hidden rotate-y-180">
+        <div 
+          className="absolute inset-0 backface-hidden" 
+          style={{ 
+            backfaceVisibility: 'hidden', 
+            WebkitBackfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)'
+          }}
+        >
           <div className="relative w-full h-full rounded-md overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 shadow-2xl" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#384959]/25 to-[#384959]/10 backdrop-blur-xl border border-white/20 shadow-2xl" />
 
             <div className="relative h-full flex flex-col justify-between p-6">
               <div className="flex-1 overflow-y-auto">
