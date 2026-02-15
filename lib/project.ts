@@ -112,7 +112,7 @@ export default [
         'Score tracking system',
       ],
       githubUrl: 'https://github.com/priscillaabhulimen/three-in-a-row',
-      // demoUrl: '#three-in-a-row',
+      demoUrl: '#three-in-a-row',
     },
     
 ]

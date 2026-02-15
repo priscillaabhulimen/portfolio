@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface ThreeInARowModalProps {
   isOpen: boolean;
@@ -9,40 +9,99 @@ interface ThreeInARowModalProps {
 
 export default function ThreeInARowModal({ isOpen, onClose }: ThreeInARowModalProps) {
   const gameContainerRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!isOpen || !gameContainerRef.current) return;
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
-    // Game variables
-    let timer: NodeJS.Timeout;
-    let gameOver = true;
-    let isChecked = false;
-    let isPaused = false;
-    let correctEntries: any[] = [];
-    let correctToWin = 0;
-    let incorrectEntries: any[] = [];
-    let timeLeft = 0;
-    let resp: any;
+  useEffect(() => {
+    if (!isOpen) return;
+    
+    // Wait for React to render the div with the ref
+    const initGame = async () => {
+      // Small delay to ensure ref is attached
+      await new Promise(resolve => setTimeout(resolve, 0));
+      
+      if (!gameContainerRef.current) {
+        return;
+      }
+      
+      setIsLoading(true);
 
-    const theGame = gameContainerRef.current;
+      // Game variables
+      let timer: NodeJS.Timeout;
+      let gameOver = true;
+      let isChecked = false;
+      let isPaused = false;
+      let correctEntries: any[] = [];
+      let correctToWin = 0;
+      let incorrectEntries: any[] = [];
+      let timeLeft = 0;
+      let resp: any;
+
+      const theGame = gameContainerRef.current;
+
+      const gameActionSection = document.createElement('section');
 
     async function getRemoteData() {
       const url = 'https://prog2700.onrender.com/threeinarow/random';
 
+      theGame.replaceChildren();
+
       try {
-        resp = await (await fetch(url)).json();
+        
+        // Race between fetch and timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => {
+          controller.abort();
+        }, 15000);
+        
+        const response = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeoutId);
+        
+        resp = await response.json();
+
+        setIsLoading(false);
         drawTable();
       } catch (error: any) {
-        console.log(error.message);
+        
+        setIsLoading(false);
+        
+        const errorContainer = document.createElement('div');
+        errorContainer.className = 'flex flex-col items-center gap-4 text-center';
+        
         const errorMessage = document.createElement('h1');
-        errorMessage.innerText = error.message;
-        errorMessage.className = 'text-red-500 text-center';
-        theGame.appendChild(errorMessage);
+        errorMessage.className = 'text-red-500 text-xl font-bold';
+        
+        if (error.name === 'AbortError') {
+          errorMessage.innerText = 'Request timed out. The server is taking too long to respond.';
+        } else {
+          errorMessage.innerText = error.message || 'Failed to load game';
+        }
+        
+        const retryButton = document.createElement('button');
+        retryButton.className = 'mt-4 px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg transition-all duration-300';
+        retryButton.innerText = 'Try Again';
+        retryButton.addEventListener('click', () => {
+          setIsLoading(true);
+          getRemoteData();
+        });
+        
+        errorContainer.appendChild(errorMessage);
+        errorContainer.appendChild(retryButton);
+        theGame.appendChild(errorContainer);
       }
     }
 
     function drawTable() {
-      theGame.innerHTML = '';
 
       const table = document.createElement('table');
       table.className = 'border-collapse mx-auto';
@@ -73,16 +132,18 @@ export default function ThreeInARowModal({ isOpen, onClose }: ThreeInARowModalPr
     function processCell(currentCell: any, coordinates: string) {
       const newTableCell = document.createElement('td');
       newTableCell.setAttribute('id', coordinates);
-      newTableCell.className = 'w-8 h-8 border border-white/20 cursor-pointer transition-all duration-200';
+      newTableCell.className = 'w-10 h-10 md:w-12 md:h-12 border border-white/20 cursor-pointer transition-all duration-200';
 
       const currentState = currentCell.currentState;
+      
+      // Set initial state
       if (currentState == 0) {
-        newTableCell.classList.add('bg-gray-700');
+        newTableCell.classList.add('bg-[#FFE4B5]'); // unclicked (moccasin)
       }
 
       if (!currentCell.canToggle) {
         if (currentState == 1) {
-          newTableCell.classList.add('bg-green-500');
+          newTableCell.classList.add('bg-blue-500'); // filled
           newTableCell.classList.remove('cursor-pointer');
         }
       } else {
@@ -98,22 +159,23 @@ export default function ThreeInARowModal({ isOpen, onClose }: ThreeInARowModalPr
     function handleCellClick(element: HTMLElement, entry: any, coordinates: string) {
       if (gameOver || isPaused) return;
 
-      const hasFilled = element.classList.contains('bg-green-500');
-      const hasUnclicked = element.classList.contains('bg-gray-700');
+      if (!entry.canToggle) return;
 
-      if (entry.canToggle) {
-        if (hasFilled) {
-          element.classList.remove('bg-green-500');
-          element.classList.add('bg-gray-700');
-          addToAppropriateList(entry, 2, coordinates);
-        } else if (hasUnclicked) {
-          element.classList.remove('bg-gray-700');
-          element.classList.add('bg-green-500');
-          addToAppropriateList(entry, 1, coordinates);
-        } else {
-          element.classList.add('bg-gray-700');
-          addToAppropriateList(entry, 0, coordinates);
-        }
+      const classAttribute = element.getAttribute('class') || '';
+
+      // Tri-state cycle: unclicked -> filled -> empty (no class) -> unclicked
+      if (classAttribute.includes('bg-blue-500')) {
+        // filled -> empty (no class)
+        element.className = 'w-10 h-10 md:w-12 md:h-12 border border-white/20 cursor-pointer transition-all duration-200';
+        addToAppropriateList(entry, 2, coordinates);
+      } else if (classAttribute.includes('bg-[#FFE4B5]')) {
+        // unclicked -> filled
+        element.className = 'w-10 h-10 md:w-12 md:h-12 border border-white/20 cursor-pointer transition-all duration-200 bg-blue-500';
+        addToAppropriateList(entry, 1, coordinates);
+      } else {
+        // empty -> unclicked
+        element.className = 'w-10 h-10 md:w-12 md:h-12 border border-white/20 cursor-pointer transition-all duration-200 bg-[#FFE4B5]';
+        addToAppropriateList(entry, 0, coordinates);
       }
     }
 
@@ -124,12 +186,15 @@ export default function ThreeInARowModal({ isOpen, onClose }: ThreeInARowModalPr
       const includedInIncorrect = incorrectEntries.some(e => e.coordinates === coordinates);
 
       if (state == 0) {
+        // Remove from both lists when empty
         correctEntries = correctEntries.filter(e => e.coordinates !== coordinates);
         incorrectEntries = incorrectEntries.filter(e => e.coordinates !== coordinates);
       } else if (entry.correctState == state) {
+        // Correct state
         incorrectEntries = incorrectEntries.filter(e => e.coordinates !== coordinates);
         if (!includedInCorrect) correctEntries.push(entry);
       } else {
+        // Incorrect state
         correctEntries = correctEntries.filter(e => e.coordinates !== coordinates);
         if (!includedInIncorrect) incorrectEntries.push(entry);
       }
@@ -149,8 +214,7 @@ export default function ThreeInARowModal({ isOpen, onClose }: ThreeInARowModalPr
     }
 
     function createInGameState() {
-      const inGameSection = document.createElement('div');
-      inGameSection.className = 'flex flex-col items-center gap-4 mt-6';
+      gameActionSection.className = 'flex flex-col items-center gap-4 mt-6';
 
       const timerText = document.createElement('h1');
       timerText.className = 'text-2xl font-bold text-white';
@@ -162,7 +226,7 @@ export default function ThreeInARowModal({ isOpen, onClose }: ThreeInARowModalPr
       statusText.className = 'text-yellow-400 h-6';
 
       const buttonGroup = document.createElement('div');
-      buttonGroup.className = 'flex gap-3';
+      buttonGroup.className = 'flex flex-col gap-3 md:flex-row items-center';
 
       const pauseButton = document.createElement('button');
       pauseButton.className = 'px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-bold rounded-lg transition-all duration-300';
@@ -188,10 +252,10 @@ export default function ThreeInARowModal({ isOpen, onClose }: ThreeInARowModalPr
       buttonGroup.appendChild(checkButton);
       buttonGroup.appendChild(hintLabel);
 
-      inGameSection.appendChild(timerText);
-      inGameSection.appendChild(statusText);
-      inGameSection.appendChild(buttonGroup);
-      theGame.appendChild(inGameSection);
+      gameActionSection.appendChild(timerText);
+      gameActionSection.appendChild(statusText);
+      gameActionSection.appendChild(buttonGroup);
+      theGame.appendChild(gameActionSection);
 
       function updateTimerDisplay() {
         const timeString = `${Math.floor(timeLeft / 60).toString().padStart(2, '0')}:${(timeLeft % 60).toString().padStart(2, '0')}`;
@@ -263,13 +327,21 @@ export default function ThreeInARowModal({ isOpen, onClose }: ThreeInARowModalPr
       if (isPaused) return;
 
       document.querySelectorAll('td').forEach(cell => {
-        (cell as HTMLElement).style.backgroundColor = '';
+        const classes = cell.className;
+        // Reset to appropriate state color
+        if (classes.includes('bg-blue-500')) {
+          (cell as HTMLElement).style.backgroundColor = ''; // blue from class
+        } else if (classes.includes('bg-[#FFE4B5]')) {
+          (cell as HTMLElement).style.backgroundColor = ''; // moccasin from class
+        } else {
+          (cell as HTMLElement).style.backgroundColor = ''; // empty/transparent
+        }
       });
 
       if (checked) {
         incorrectEntries.forEach(entry => {
           const cell = document.querySelector(`#${entry.coordinates}`) as HTMLElement;
-          if (cell) cell.style.backgroundColor = '#ef4444';
+          if (cell) cell.style.backgroundColor = '#ef4444'; // red for incorrect
         });
       }
     }
@@ -279,26 +351,25 @@ export default function ThreeInARowModal({ isOpen, onClose }: ThreeInARowModalPr
       clearInterval(timer);
       updateHintColors(false);
 
-      theGame.innerHTML = '';
 
-      const endSection = document.createElement('div');
-      endSection.className = 'flex flex-col items-center gap-4 mt-6';
+      gameActionSection.replaceChildren();
+      gameActionSection.className = 'flex flex-col items-center gap-4 mt-6';
 
       const title = document.createElement('h1');
-      title.className = 'text-3xl font-bold';
+      title.className = 'text-3xl md:text-4xl font-bold';
       title.innerText = isTimeUp ? "Time's up. You Lose!!" : 'YOU WIN!';
       title.style.color = isTimeUp ? '#ef4444' : '#22c55e';
 
       const correctText = document.createElement('p');
-      correctText.className = 'text-white';
+      correctText.className = 'text-white text-lg';
       correctText.innerText = `Correct Boxes: ${correctEntries.length}`;
 
       const incorrectText = document.createElement('p');
-      incorrectText.className = 'text-white';
+      incorrectText.className = 'text-white text-lg';
       incorrectText.innerText = `Incorrect Boxes: ${correctToWin - correctEntries.length}`;
 
       const buttonGroup = document.createElement('div');
-      buttonGroup.className = 'flex gap-3 mt-4';
+      buttonGroup.className = 'flex flex-col md:flex-row gap-3 mt-4';
 
       const restartButton = document.createElement('button');
       restartButton.className = 'px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg transition-all duration-300';
@@ -319,16 +390,15 @@ export default function ThreeInARowModal({ isOpen, onClose }: ThreeInARowModalPr
       buttonGroup.appendChild(restartButton);
       buttonGroup.appendChild(newGameButton);
 
-      endSection.appendChild(title);
-      endSection.appendChild(correctText);
-      endSection.appendChild(incorrectText);
-      endSection.appendChild(buttonGroup);
+      gameActionSection.appendChild(title);
+      gameActionSection.appendChild(correctText);
+      gameActionSection.appendChild(incorrectText);
+      gameActionSection.appendChild(buttonGroup);
 
-      theGame.appendChild(endSection);
+      theGame.appendChild(gameActionSection);
     }
 
     function clearValues() {
-      theGame.innerHTML = '';
       gameOver = true;
       correctEntries = [];
       correctToWin = 0;
@@ -336,13 +406,22 @@ export default function ThreeInARowModal({ isOpen, onClose }: ThreeInARowModalPr
       timeLeft = 0;
       isChecked = false;
       isPaused = false;
+      gameActionSection.replaceChildren();
+      theGame.replaceChildren();
     }
 
     getRemoteData();
 
     return () => {
       if (timer) clearInterval(timer);
-      theGame.innerHTML = '';
+      theGame.replaceChildren();
+    };
+    };
+
+    initGame();
+
+    return () => {
+      // Cleanup will be handled by initGame's return
     };
   }, [isOpen]);
 
@@ -374,10 +453,41 @@ export default function ThreeInARowModal({ isOpen, onClose }: ThreeInARowModalPr
           </button>
         </div>
         <div 
-          ref={gameContainerRef}
-          className="w-full h-[calc(90vh-48px)] p-8 overflow-y-auto flex flex-col items-center"
-        />
+        ref={gameContainerRef}
+        className='w-full h-[calc(90vh-48px)] p-4 md:p-8 overflow-y-auto flex flex-col items-center'
+        >
+          {isLoading ? (
+            <div className="w-full h-[calc(90vh-48px)] flex flex-col items-center justify-center gap-6">
+              <div className="relative w-32 h-1.5 bg-white/10 rounded-full overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 animate-loading-sweep" />
+              </div>
+              <div className="text-center space-y-2">
+                <p className="text-white text-lg animate-pulse">Loading game...</p>
+                <p className="text-gray-400 text-sm">This may take 10-15 seconds</p>
+              </div>
+            </div>
+          ) : (
+          
+            <div 
+              className=""
+            />
+            
+          )}
+        </div>
       </div>
+      <style jsx>{`
+        @keyframes loading-sweep {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(100%);
+          }
+        }
+        .animate-loading-sweep {
+          animation: loading-sweep 1.5s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   );
 }
