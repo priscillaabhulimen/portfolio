@@ -452,28 +452,24 @@ export default function ThreeInARowModal({ isOpen, onClose }: ThreeInARowModalPr
             </svg>
           </button>
         </div>
-        <div 
-        ref={gameContainerRef}
-        className='w-full h-[calc(90vh-48px)] p-4 md:p-8 overflow-y-auto flex flex-col items-center'
-        >
-          {isLoading ? (
-            <div className="w-full h-[calc(90vh-48px)] flex flex-col items-center justify-center gap-6">
-              <div className="relative w-32 h-1.5 bg-white/10 rounded-full overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 animate-loading-sweep" />
-              </div>
-              <div className="text-center space-y-2">
-                <p className="text-white text-lg animate-pulse">Loading game...</p>
-                <p className="text-gray-400 text-sm">This may take 10-15 seconds</p>
-              </div>
+        
+        {isLoading ? (
+          <div className="w-full h-[calc(90vh-48px)] flex flex-col items-center justify-center gap-6">
+            <div className="relative w-32 h-1.5 bg-white/10 rounded-full overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 animate-loading-sweep" />
             </div>
-          ) : (
-          
-            <div 
-              className=""
-            />
-            
-          )}
-        </div>
+            <div className="text-center space-y-2">
+              <p className="text-white text-lg animate-pulse">Loading game...</p>
+              <p className="text-gray-400 text-sm">This may take 10-15 seconds</p>
+            </div>
+          </div>
+        ) : (
+          <div 
+            ref={gameContainerRef}
+            className='w-full h-[calc(90vh-48px)] p-4 md:p-8 overflow-y-auto flex flex-col items-center'
+          > 
+          </div>   
+        )}
       </div>
       <style jsx>{`
         @keyframes loading-sweep {
