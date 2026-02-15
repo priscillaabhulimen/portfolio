@@ -20,7 +20,7 @@ export default function HeroSection({
       <div className="flex flex-col-reverse lg:flex-row justify-center items-center">
         {/* Textbox area */}
         <div className="pt-40 pb-8 lg:py-8 px-8 lg:w-full -mt-40 lg:mt-0 lg:-mr-32 rounded-md  bg-gradient-to-br from-gray-700/60 to-gray-900/60 backdrop-blur-xl">
-          <p className="text-gray-400 text-md">Hi, I'm</p>
+          <p className="text-gray-400 text-md">Hi, I am</p>
           <h1 className="text-3xl lg:text-5xl font-bold text-white leading-tight">
             {name}
           </h1>
