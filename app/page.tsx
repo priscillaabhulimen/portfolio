@@ -24,10 +24,10 @@ export default function Home() {
   const [isThreeInARowOpen, setIsThreeInARowOpen] = useState(false);
 
   const companies = [
-    { name: 'Central Bank of Nigeria', logo: '🏦', url: 'https://cbn.gov.ng' },
-    { name: 'Africhange', logo: '💱', url: 'https://africhange.com' },
-    { name: 'Goalspaces LLC', logo: '🎯', url: 'https://goalspaces.com' },
-    { name: 'iRecharge Tech Innovations', logo: '⚡', url: 'https://irecharge.com' },
+    { name: 'Central Bank of Nigeria', logo: '/cbn.png', url: 'https://cbn.gov.ng' },
+    { name: 'Africhange', logo: '/afr.png', url: 'https://africhange.com' },
+    { name: 'Goalspaces LLC', logo: '/gsp.png', url: 'https://goalspaces.com' },
+    { name: 'iRecharge Tech Innovations', logo: '/irc.png', url: 'https://irecharge.com' },
   ];
 
   const socialLinks = [

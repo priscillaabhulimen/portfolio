@@ -17,30 +17,26 @@ export default function CompanyShowcase({ companies }: CompanyShowcaseProps) {
       <div className="max-w-7xl mx-auto">
         <SectionHeader title="Companies I've Worked With" subtitle="A selection of organizations I've collaborated with." />
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
           {companies.map((company, index) => (
             <a
               key={index}
               href={company.url || '#'}
               target={company.url ? '_blank' : undefined}
               rel={company.url ? 'noopener noreferrer' : undefined}
-              className="group relative p-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl transition-all duration-300 hover:scale-105 flex flex-col items-center justify-center gap-3"
+              className="flex gap-2 py-2 px-6 bg-white/5 hover:bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl transition-all duration-300 hover:scale-105 items-center"
             >
               {/* Logo */}
               <div className="w-16 h-16 flex items-center justify-center text-4xl">
-                {company.logo.startsWith('http') ? (
-                  <img
-                    src={company.logo}
-                    alt={company.name}
-                    className="w-full h-full object-contain"
-                  />
-                ) : (
-                  <span>{company.logo}</span>
-                )}
+                <img
+                  src={company.logo}
+                  alt={company.name}
+                  className="w-full h-full object-contain"
+                />
               </div>
 
               {/* Company Name */}
-              <p className="text-white text-center font-medium text-sm">
+              <p className="text-white font-medium text-md">
                 {company.name}
               </p>
 
