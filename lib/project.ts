@@ -3,8 +3,7 @@ export default [
     id: 0,
     title: 'PayMeBlue (Blue)',
     description: 'A payment solutions built with the needs of the local consumer demographic and economic climate in mind',
-    tags: ['Mobile', 'Flutter'],
-    categories: ['Mobile'],
+    tags: ['Mobile', 'Flutter', 'Firebase', 'NodeJS'],
     features: [
       'Push notifications',
       'Webview app with custom events and interactions',
@@ -21,8 +20,8 @@ export default [
       title: 'PayMeBlue (Blue) Business',
       description: 'A payment solutions built with the needs of the local consumer demographic and economic climate in mind',
       tags: ['Mobile', 'Flutter'],
-      categories: ['Mobile'],
       features: [
+        'Modern UI/UX design',
         'Push notifications',
         'Sales analytics dashboard',
         'Mini app for staff management and sales tracking',
@@ -36,7 +35,6 @@ export default [
       title: 'Goalspaces',
       description: 'A community-based, peer accountability social app that intends to encourage goal setting and goal achievement through bite-sized tasks',
       tags: ['Mobile', 'Flutter'],
-      categories: ['Mobile'],
       features: [
         'Deep linking with custom events',
         'Deferred linking',
@@ -52,7 +50,6 @@ export default [
       title: 'LinkedIn - Redesign',
       description: 'A redesign of the LinkedIn web app home screen for better organisation and less information overload',
       tags: ['Design', 'Figma', 'Redesign'],
-      categories: ['Design'],
       features: [
         'Simplified navigation',
         'Reduced visual clutter',
@@ -69,7 +66,6 @@ export default [
       title: 'Battleship - Revised',
       description: 'A pure ESM javascript app to study JS functions, local and 3rd party modules, code structure and logical reasoning to create a game very much like and inspired by the popular game, "Battleship".',
       tags: ['NodeJS', 'Mini Games'],
-      categories: ['Web'],
       features: [
         'Terminal-based gameplay with authentic CLI experience',
         'Random map generation',
@@ -81,11 +77,26 @@ export default [
       demoUrl: '#battleship',
     },
     {
+      id: 5,
+      title: 'Three-In-A-Row',
+      description: 'A mini game used to study DOM, BOM and CSSOM manipulation, as well as API calls using fetch in vanilla javascript. The use of frameworks was intentionally avoided in order to strengthen knowledge in the cpre episodes of web development.',
+      tags: ['Web', 'HTML5', 'CSS3', 'Mini Games'],
+      features: [
+        'Pure vanilla JavaScript implementation',
+        'DOM manipulation mastery',
+        'Real-time game state management',
+        'Responsive grid layout',
+        'Win detection algorithm',
+        'Score tracking system',
+      ],
+      githubUrl: 'https://github.com/priscillaabhulimen/three-in-a-row',
+      demoUrl: '#three-in-a-row',
+    },
+    {
       id: 6,
       title: 'Poker Draw',
       description: 'A mini game that explores logical reasoning and constraint-based app development to deliver an app that allows you to draw cards and then determines your best hand from that draw.',
       tags: ['Web', 'VueJS', 'SCSS', 'TailwindCSS', 'Mini Games'],
-      categories: ['Web'],
       features: [
         'Card drawing mechanics',
         'Hand evaluation algorithm',
@@ -98,21 +109,17 @@ export default [
       liveUrl: 'https://vue-poker-app.netlify.app/',
     },
     {
-      id: 5,
-      title: 'Three-In-A-Row',
-      description: 'A mini game used to study DOM, BOM and CSSOM manipulation, as well as API calls using fetch in vanilla javascript. The use of frameworks was intentionally avoided in order to strengthen knowledge in the cpre episodes of web development.',
-      tags: ['Web', 'HTML5', 'CSS3', 'Mini Games'],
-      categories: ['Web', 'Backend'],
+      id: 7,
+      title: 'Musical CRUD',
+      description: 'A starter app using NodeJS and Express to create and update an album manager. It uses EJS as the templating engine and SQLite for the database.',
+      tags: ['Backend', 'NodeJS', 'Express', 'SQLite'],
       features: [
-        'Pure vanilla JavaScript implementation',
-        'DOM manipulation mastery',
-        'Real-time game state management',
-        'Responsive grid layout',
-        'Win detection algorithm',
-        'Score tracking system',
+        'Modilar Express server structure',
+        'RESTful API design',
+        'CRUD operations for album/artist/track management',
+        'Helper functions for database interactions',
+        'Test driven development with Jest and Superbase',
       ],
-      githubUrl: 'https://github.com/priscillaabhulimen/three-in-a-row',
-      demoUrl: '#three-in-a-row',
+      githubUrl: 'https://github.com/priscillaabhulimen/crud-api-with-sqlite',
     },
-    
 ]
