@@ -52,15 +52,24 @@ export default function ProjectCard({
         className={`relative w-full h-full transition-transform duration-700 transform-style-3d ${
           isFlipped ? 'rotate-y-180' : ''
         }`}
-        style={{ transformStyle: 'preserve-3d' }}
+        style={{ transformStyle: 'preserve-3d', WebkitTransformStyle: 'preserve-3d' }}
       >
         {/* Front of Card */}
         <div 
           className="absolute inset-0 backface-hidden" 
-          style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+          style={{
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
+            // Safari fix: force opacity to 0 the instant we cross 90°, don't wait for
+            // backface-visibility to kick in (it's delayed in Safari's compositor).
+            opacity: isFlipped ? 0 : 1,
+            transition: 'opacity 0s 0.35s',
+          }}
           aria-hidden={isFlipped}
         >
           <div className="relative w-full h-full rounded-md overflow-hidden group-hover:scale-[1.02] transition-transform duration-300 focus-within:ring-2 focus-within:ring-purple-500 focus-within:ring-offset-2 focus-within:ring-offset-black">
+            {/* Solid base layer for Safari — backdrop-blur alone renders as transparent in Safari 3D contexts */}
+            <div className="absolute inset-0 bg-[#0a0a12]/80 rounded-md" />
             <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/10 shadow-2xl" />
             
             <div
@@ -134,12 +143,15 @@ export default function ProjectCard({
           style={{ 
             backfaceVisibility: 'hidden', 
             WebkitBackfaceVisibility: 'hidden',
-            transform: 'rotateY(180deg)'
+            transform: 'rotateY(180deg)',
+            opacity: isFlipped ? 1 : 0,
+            transition: 'opacity 0s 0.35s',
           }}
           aria-hidden={!isFlipped}
         >
           <div className="relative w-full h-full rounded-md overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#384959]/25 to-[#384959]/10 backdrop-blur-xl border border-white/20 shadow-2xl" />
+            {/* Solid fallback bg first — Safari can't reliably render backdrop-blur inside preserve-3d layers */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#132434]/60 to-[#1e2a35]/80 border border-white/20 shadow-2xl rounded-md" />
 
             <div className="relative h-full flex flex-col justify-between p-6">
               <div className="flex-1 overflow-y-auto">
@@ -258,9 +270,11 @@ export default function ProjectCard({
       <style jsx>{`
         .perspective-1000 {
           perspective: 1000px;
+          -webkit-perspective: 1000px;
         }
         .transform-style-3d {
           transform-style: preserve-3d;
+          -webkit-transform-style: preserve-3d;
         }
         .backface-hidden {
           backface-visibility: hidden;
@@ -268,8 +282,9 @@ export default function ProjectCard({
         }
         .rotate-y-180 {
           transform: rotateY(180deg);
+          -webkit-transform: rotateY(180deg);
         }
-      `}</style> 
+      `}</style>
     </div>
   );
 }
